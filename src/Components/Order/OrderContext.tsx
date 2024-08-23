@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 
-interface IOrderElement {
+export interface IOrderElement {
   name: string;
   unit_price: number;
   price: number;
@@ -10,7 +10,7 @@ interface IOrderElement {
 interface IOrderContext {
   list: IOrderElement[] | null;
   addOrder: (order: IOrderElement) => void;
-  updateOrder: (order: string) => void;
+  updateOrder: (updatedOrder: IOrderElement, order: string) => void;
   deleteOrder: (order: string) => void;
 }
 
@@ -29,14 +29,16 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({
   const addOrder = (order: IOrderElement) => {
     setCart([...(cart as IOrderElement[]), order]);
   };
-  const updateOrder = (orderName: string) => {
+  const updateOrder = (updatedOrder: IOrderElement, orderName: string) => {
     setCart((prev) => {
-      return [...(prev as IOrderElement[])];
+      return prev!.map((obj) =>
+        obj.name === orderName ? { ...obj, ...updatedOrder } : obj,
+      );
     });
   };
   const deleteOrder = (orderName: string) => {
     setCart((prev) => {
-      return [...(prev as IOrderElement[])];
+      return prev!.filter((obj) => obj.name !== orderName);
     });
   };
 

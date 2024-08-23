@@ -5,6 +5,7 @@ import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
 
 import { useProductCardContext } from "./ProductContext";
 import { useOrderContext } from "../Order/OrderContext";
+import { deleteOrderByname } from "@/Utils/functions";
 
 export const ProductImage: React.FC = () => {
   const productCtx = useProductCardContext();
@@ -65,12 +66,22 @@ export const ProductAddCartBtn = () => {
 };
 
 export const ProductEditQuantityBtn = () => {
-  const productCtx = useProductCardContext();
-  const cartCtx = useOrderContext();
+  const productCtx = useProductCardContext()!;
+  const cartCtx = useOrderContext()!;
 
   const [value, setValue] = useState<number>(1);
 
-  console.log(cartCtx?.list);
+  useEffect(() => {
+    if (value <= 0) {
+      cartCtx.deleteOrder(productCtx.name);
+    }
+    const order = cartCtx.list!.find((order) => order.name === productCtx.name);
+    order!.amount = value;
+    order!.price = value * order!.unit_price;
+
+    cartCtx.updateOrder(order!, productCtx.name);
+    return;
+  }, [value]);
 
   return (
     <div className="bg-red-custom flex w-40 items-center justify-between gap-4 rounded-l-3xl rounded-r-3xl px-2 py-2 text-white">

@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import Carbon from "@/assets/images/icon-carbon-neutral.svg";
 import Close from "@/assets/images/icon-remove-item.svg";
+import { useOrderContext } from "./Order/OrderContext";
 
 const OrderSingle: React.FC<{
   name: string;
@@ -38,22 +39,38 @@ const OrderList: React.FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 const OrderTotal = () => {
+  const cartCtx = useOrderContext()!;
+  const value = cartCtx!.list?.reduce((prev, curr) => {
+    return curr.price + prev;
+  }, 0);
   return (
     <div className="flex items-center justify-between">
       <span className="text-sm">Order Total</span>
-      <span className="text-2xl font-extrabold">$50.50</span>
+      <span className="text-2xl font-extrabold">${value?.toFixed(2)}</span>
     </div>
   );
 };
 
 const Cart = () => {
+  const cartCtx = useOrderContext()!;
   return (
     <div className="flex h-fit flex-grow flex-col gap-4 rounded-md bg-white p-4 text-rose-900">
       <div>
         <h1 className="text-red-custom text-2xl font-bold">Your Cart</h1>
       </div>
       <OrderList>
-        <div></div>
+        {cartCtx.list!.length > 0 &&
+          cartCtx.list?.map((order, i) => {
+            return (
+              <OrderSingle
+                key={i}
+                name={order.name}
+                amount={order.amount}
+                price={order.price}
+                unit_price={order.unit_price}
+              />
+            );
+          })}
       </OrderList>
       <OrderTotal />
       <div className="flex w-4/5 items-center justify-center gap-2 self-center rounded-md bg-rose-50 py-2">
