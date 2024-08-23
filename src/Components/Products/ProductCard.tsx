@@ -5,6 +5,7 @@ import {
   ProductCategory,
   ProductPrice,
   ProductAddCartBtn,
+  ProductEditQuantityBtn,
 } from "./ProductItems";
 
 interface ProductCardProps {
@@ -17,6 +18,7 @@ interface ProductCardComponents extends React.FC<ProductCardProps> {
   Category: React.FC;
   Price: React.FC;
   AddCartBtn: React.FC;
+  EditQuantityBtn: React.FC;
 }
 
 const ProductCard: ProductCardComponents = ({ children }: ProductCardProps) => {
@@ -32,3 +34,4 @@ ProductCard.Name = ProductName;
 ProductCard.Category = ProductCategory;
 ProductCard.Price = ProductPrice;
 ProductCard.AddCartBtn = ProductAddCartBtn;
+ProductCard.EditQuantityBtn = ProductEditQuantityBtn;

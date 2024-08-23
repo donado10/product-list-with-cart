@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
 import ProductCard from "./Products/ProductCard";
 import ProductCardContext from "./Products/ProductContext";
+import { useOrderContext } from "./Order/OrderContext";
 
 interface ProductListProps {
   children: ReactNode;
@@ -20,6 +21,8 @@ const Menu = () => {
   const [data, setData] = useState<
     { image: string; name: string; category: string; price: number }[] | []
   >([]);
+
+  const cartCtx = useOrderContext()!;
 
   useEffect(() => {
     fetch("http://localhost:5173/data/data.json")
@@ -52,7 +55,12 @@ const Menu = () => {
                     <div className="relative mb-7 h-fit w-fit">
                       <ProductCard.Image />
                       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
-                        <ProductCard.AddCartBtn />
+                        {!cartCtx?.list?.find(
+                          (value) => value.name === d.name,
+                        ) && <ProductCard.AddCartBtn />}
+                        {cartCtx?.list?.find(
+                          (value) => value.name === d.name,
+                        ) && <ProductCard.EditQuantityBtn />}
                       </div>
                     </div>
                     <ProductCard.Name />

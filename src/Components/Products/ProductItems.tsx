@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AddCartLogo from "@/assets/images/icon-add-to-cart.svg";
+import IncrementQuantity from "@/assets/images/icon-increment-quantity.svg";
+import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
 
 import { useProductCardContext } from "./ProductContext";
+import { useOrderContext } from "../Order/OrderContext";
 
 export const ProductImage: React.FC = () => {
   const productCtx = useProductCardContext();
@@ -38,14 +41,59 @@ export const ProductPrice: React.FC = () => {
 };
 
 export const ProductAddCartBtn = () => {
-  const productCtx = useProductCardContext();
+  const productCtx = useProductCardContext()!;
+  const cartCtx = useOrderContext();
 
   return (
-    <button className="flex w-40 items-center justify-center gap-4 rounded-l-3xl rounded-r-3xl border-[1px] border-rose-400 bg-white py-2">
+    <button
+      onClick={() => {
+        cartCtx?.addOrder({
+          name: productCtx?.name,
+          amount: 1,
+          unit_price: productCtx?.price,
+          price: productCtx?.price * 1,
+        });
+      }}
+      className="flex w-40 items-center justify-center gap-4 rounded-l-3xl rounded-r-3xl border-[1px] border-rose-400 bg-white py-2"
+    >
       <span>
         <img src={AddCartLogo} alt="" />
       </span>
       <span className="text-sm font-semibold">Add to Cart</span>
     </button>
+  );
+};
+
+export const ProductEditQuantityBtn = () => {
+  const productCtx = useProductCardContext();
+  const cartCtx = useOrderContext();
+
+  const [value, setValue] = useState<number>(1);
+
+  console.log(cartCtx?.list);
+
+  return (
+    <div className="bg-red-custom flex w-40 items-center justify-between gap-4 rounded-l-3xl rounded-r-3xl px-2 py-2 text-white">
+      <button
+        onClick={() => {
+          if (value < 0) {
+            return;
+          }
+          setValue(value - 1);
+        }}
+        className="flex aspect-square w-4 items-center justify-center rounded-full border-[1px] border-white"
+      >
+        <img src={DecrementQuantity} alt="" />
+      </button>
+      <span className="text-sm font-semibold">{value >= 0 ? value : 0}</span>
+      <button
+        onClick={() => {
+          setValue(value + 1);
+        }}
+        className="flex aspect-square w-4 items-center justify-center rounded-full border-[1px] border-white"
+      >
+        <img src={IncrementQuantity} alt="" />
+      </button>
+    </div>
   );
 };
