@@ -9,9 +9,11 @@ interface ProductListProps {
 
 const ProductList = ({ children }: ProductListProps) => {
   return (
-    <ul className="grid w-full grid-cols-3 gap-4">
+    <ul className="xs:grid-cols-1 xs:gap-8 grid w-full sm:grid-cols-3 sm:gap-4">
       {React.Children.map(children, (child) => (
-        <li>{child}</li>
+        <li className="xs:self-center xs:justify-self-center sm:self-start sm:justify-self-start">
+          {child}
+        </li>
       ))}
     </ul>
   );
@@ -43,7 +45,7 @@ const Menu = () => {
   return (
     <>
       {data.length > 0 && (
-        <div className="flex w-fit flex-col justify-center gap-4">
+        <div className="xs:w-full flex flex-col justify-center gap-4 xl:w-fit">
           <div>
             <h1 className="text-3xl font-bold">Desserts</h1>
           </div>

@@ -5,13 +5,22 @@ import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
 
 import { useProductCardContext } from "./ProductContext";
 import { useOrderContext } from "../Order/OrderContext";
-import { deleteOrderByname } from "@/Utils/functions";
 
 export const ProductImage: React.FC = () => {
   const productCtx = useProductCardContext();
+  const cartCtx = useOrderContext();
+
+  const handleSelectStyle = cartCtx?.list?.some(
+    (order) => order.name === productCtx?.name,
+  )
+    ? "border-[3px] border-red-custom"
+    : "";
+
   return (
-    <div className="aspect-square w-56 overflow-hidden rounded-lg">
-      <img className="h-full w-full" src={productCtx?.image} alt="" />
+    <div
+      className={`xs:w-56 aspect-square overflow-hidden rounded-lg sm:w-40 md:w-56 ${handleSelectStyle}`}
+    >
+      <img className={`h-full w-full`} src={productCtx?.image} alt="" />
     </div>
   );
 };
@@ -35,7 +44,7 @@ export const ProductPrice: React.FC = () => {
   const productCtx = useProductCardContext();
 
   return (
-    <h2 className="text-red-custom text-base font-semibold">
+    <h2 className="text-base font-semibold text-red-custom">
       ${productCtx?.price.toFixed(2)}
     </h2>
   );
@@ -84,7 +93,7 @@ export const ProductEditQuantityBtn = () => {
   }, [value]);
 
   return (
-    <div className="bg-red-custom flex w-40 items-center justify-between gap-4 rounded-l-3xl rounded-r-3xl px-2 py-2 text-white">
+    <div className="flex w-40 items-center justify-between gap-4 rounded-l-3xl rounded-r-3xl bg-red-custom px-2 py-2 text-white">
       <button
         onClick={() => {
           if (value < 0) {
