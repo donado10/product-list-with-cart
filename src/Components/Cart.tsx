@@ -6,7 +6,9 @@ import MyPortal from "./Overlay";
 import { OrderConfirmList, OrderSingleModal } from "./Order/OrderItems";
 import Success from "@/assets/images/icon-order-confirmed.svg";
 
-const CartConfirmModal = () => {
+const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
+  onNewOrder,
+}) => {
   const cartCtx = useOrderContext()!;
   return (
     <div className="flex h-fit w-[37rem] flex-grow flex-col gap-4 rounded-md bg-white p-8 text-rose-900">
@@ -37,6 +39,7 @@ const CartConfirmModal = () => {
         onClick={() => {
           console.log("hey");
           cartCtx.resetOrder();
+          onNewOrder(false);
         }}
         className="flex w-4/5 items-center justify-center self-center rounded-md rounded-l-3xl rounded-r-3xl bg-red-custom py-2 font-semibold text-white"
       >
@@ -55,7 +58,7 @@ const Cart = () => {
         <MyPortal
           isOpen={enableModal}
           onClose={() => setEnableModal(false)}
-          modal={<CartConfirmModal />}
+          modal={<CartConfirmModal onNewOrder={setEnableModal} />}
         />
       )}
       <div>

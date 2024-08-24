@@ -10,7 +10,13 @@ const MyPortal: React.FC<{
   el.id = "overlay";
   el.classList.value =
     "fixed inset-0 w-screen h-100% bg-black/75 flex items-center justify-center";
-  //el.addEventListener("click", onClose);
+  el.addEventListener("click", (e: Event) => {
+    const target = e.target as HTMLElement;
+    if (target.id === "overlay") {
+      onClose();
+    }
+    return;
+  });
 
   useEffect(() => {
     document.body.appendChild(el);
