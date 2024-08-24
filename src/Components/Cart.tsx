@@ -11,7 +11,7 @@ const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
 }) => {
   const cartCtx = useOrderContext()!;
   return (
-    <div className="flex h-fit w-[37rem] flex-grow flex-col gap-4 rounded-md bg-white p-8 text-rose-900">
+    <div className="xs:[25rem] flex h-fit flex-grow flex-col gap-4 rounded-md bg-white p-8 text-rose-900 sm:w-[37rem]">
       <div>
         <img src={Success} alt="" />
       </div>
@@ -88,7 +88,11 @@ const Cart = () => {
         </span>
       </div>
       <button
-        onClick={() => setEnableModal(true)}
+        onClick={() => {
+          if (cartCtx.list!.length > 0) {
+            setEnableModal(true);
+          }
+        }}
         className="flex w-4/5 items-center justify-center self-center rounded-md rounded-l-3xl rounded-r-3xl bg-red-custom py-2 font-semibold text-white"
       >
         <span>Confirm Order</span>
