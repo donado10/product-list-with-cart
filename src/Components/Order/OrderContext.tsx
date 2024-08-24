@@ -12,6 +12,7 @@ interface IOrderContext {
   addOrder: (order: IOrderElement) => void;
   updateOrder: (updatedOrder: IOrderElement, order: string) => void;
   deleteOrder: (order: string) => void;
+  resetOrder: () => void;
 }
 
 const OrderContext = createContext<IOrderContext | null>(null);
@@ -42,9 +43,13 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({
     });
   };
 
+  const resetOrder = () => {
+    setCart([]);
+  };
+
   return (
     <OrderContext.Provider
-      value={{ list: cart, addOrder, updateOrder, deleteOrder }}
+      value={{ list: cart, addOrder, updateOrder, deleteOrder, resetOrder }}
     >
       {children}
     </OrderContext.Provider>

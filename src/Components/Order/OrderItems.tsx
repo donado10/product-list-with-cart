@@ -75,7 +75,7 @@ export const OrderTotal = () => {
     return curr.price + prev;
   }, 0);
   return (
-    <div className="flex items-center justify-between">
+    <div className="flex items-center justify-between p-2">
       <span className="text-sm">Order Total</span>
       <span className="text-2xl font-extrabold">${value?.toFixed(2)}</span>
     </div>

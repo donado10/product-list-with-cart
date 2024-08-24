@@ -33,7 +33,13 @@ const CartConfirmModal = () => {
         </OrderConfirmList>
         <OrderTotal />
       </div>
-      <button className="flex w-4/5 items-center justify-center self-center rounded-md rounded-l-3xl rounded-r-3xl bg-red-custom py-2 font-semibold text-white">
+      <button
+        onClick={() => {
+          console.log("hey");
+          cartCtx.resetOrder();
+        }}
+        className="flex w-4/5 items-center justify-center self-center rounded-md rounded-l-3xl rounded-r-3xl bg-red-custom py-2 font-semibold text-white"
+      >
         <span>Start New Order</span>
       </button>
     </div>
