@@ -38,7 +38,7 @@ const Menu = () => {
   const cartCtx = useOrderContext()!;
 
   useEffect(() => {
-    fetch("/Apps/data/data.json")
+    fetch("/data/data.json")
       .then((res) => res.json())
       .then((newData) => {
         return setData(newData);
