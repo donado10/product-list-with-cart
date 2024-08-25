@@ -5,6 +5,7 @@ export interface IOrderElement {
   unit_price: number;
   price: number;
   amount: number;
+  thumbnail: string;
 }
 
 interface IOrderContext {

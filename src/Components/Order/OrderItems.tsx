@@ -61,7 +61,7 @@ export const OrderConfirmList: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   return (
-    <ul className="flex flex-col justify-center">
+    <ul className="custom-scrollbar flex max-h-56 flex-col justify-center overflow-y-scroll">
       {React.Children.map(children, (child) => (
         <li>{child}</li>
       ))}
@@ -87,9 +87,13 @@ export const OrderSingleModal: React.FC<{
   amount: number;
   unit_price: number;
   price: number;
-}> = ({ name, amount, unit_price, price }) => {
+  thumbnail: string;
+}> = ({ name, amount, unit_price, price, thumbnail }) => {
   return (
-    <div className="flex w-full items-center justify-between border-b-2 border-rose-100 py-4">
+    <div className="flex w-full items-center gap-4 border-b-2 border-rose-100 py-4">
+      <div className="aspect-square w-12 overflow-hidden rounded-l-md rounded-r-md">
+        <img src={thumbnail} className="h-full w-full" alt="" />
+      </div>
       <div className="flex flex-col justify-center gap-1">
         <OrderName name={name} />
         <div className="details flex items-center gap-6">

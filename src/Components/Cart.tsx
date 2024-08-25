@@ -30,6 +30,7 @@ const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
               price={order.price}
               unit_price={order.unit_price}
               amount={order.amount}
+              thumbnail={order.thumbnail}
             />
           ))}
         </OrderConfirmList>

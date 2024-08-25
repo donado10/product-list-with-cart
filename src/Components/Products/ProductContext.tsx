@@ -2,7 +2,12 @@ import { useContext } from "react";
 import { createContext } from "react";
 
 const ProductCardContext = createContext<{
-  image: string;
+  image: {
+    desktop: string;
+    mobile: string;
+    tablet: string;
+    thumbnail: string;
+  };
   name: string;
   category: string;
   price: number;

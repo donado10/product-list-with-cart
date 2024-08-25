@@ -9,7 +9,7 @@ interface ProductListProps {
 
 const ProductList = ({ children }: ProductListProps) => {
   return (
-    <ul className="xs:grid-cols-1 xs:gap-8 grid w-full sm:grid-cols-3 sm:gap-4">
+    <ul className="grid w-full xs:grid-cols-1 xs:gap-8 sm:grid-cols-3 sm:gap-4">
       {React.Children.map(children, (child) => (
         <li className="xs:self-center xs:justify-self-center sm:self-start sm:justify-self-start">
           {child}
@@ -21,7 +21,18 @@ const ProductList = ({ children }: ProductListProps) => {
 
 const Menu = () => {
   const [data, setData] = useState<
-    { image: string; name: string; category: string; price: number }[] | []
+    | {
+        image: {
+          desktop: string;
+          mobile: string;
+          tablet: string;
+          thumbnail: string;
+        };
+        name: string;
+        category: string;
+        price: number;
+      }[]
+    | []
   >([]);
 
   const cartCtx = useOrderContext()!;
@@ -30,22 +41,14 @@ const Menu = () => {
     fetch("http://localhost:5173/data/data.json")
       .then((res) => res.json())
       .then((newData) => {
-        const refactorData = newData.map((data: any) => {
-          return {
-            image: data.image.desktop,
-            name: data.name,
-            category: data.category,
-            price: data.price,
-          };
-        });
-        return setData(refactorData);
+        return setData(newData);
       });
   }, []);
 
   return (
     <>
       {data.length > 0 && (
-        <div className="xs:w-full flex flex-col justify-center gap-4 xl:w-fit">
+        <div className="flex flex-col justify-center gap-4 xs:w-full xl:w-fit">
           <div>
             <h1 className="text-3xl font-bold">Desserts</h1>
           </div>

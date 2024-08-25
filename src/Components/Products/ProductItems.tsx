@@ -18,9 +18,9 @@ export const ProductImage: React.FC = () => {
 
   return (
     <div
-      className={`xs:w-56 aspect-square overflow-hidden rounded-lg sm:w-40 md:w-56 ${handleSelectStyle}`}
+      className={`aspect-square overflow-hidden rounded-lg xs:w-56 sm:w-40 md:w-56 ${handleSelectStyle}`}
     >
-      <img className={`h-full w-full`} src={productCtx?.image} alt="" />
+      <img className={`h-full w-full`} src={productCtx?.image.desktop} alt="" />
     </div>
   );
 };
@@ -62,6 +62,7 @@ export const ProductAddCartBtn = () => {
           amount: 1,
           unit_price: productCtx?.price,
           price: productCtx?.price * 1,
+          thumbnail: productCtx.image.thumbnail,
         });
       }}
       className="flex w-40 items-center justify-center gap-4 rounded-l-3xl rounded-r-3xl border-[1px] border-rose-400 bg-white py-2"
