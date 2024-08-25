@@ -61,11 +61,13 @@ export const OrderConfirmList: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
   return (
-    <ul className="custom-scrollbar flex max-h-56 flex-col justify-center overflow-y-scroll">
-      {React.Children.map(children, (child) => (
-        <li>{child}</li>
-      ))}
-    </ul>
+    <div className="custom-scrollbar max-h-56 overflow-y-scroll">
+      <ul className="flex flex-col justify-center">
+        {React.Children.map(children, (child) => (
+          <li>{child}</li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

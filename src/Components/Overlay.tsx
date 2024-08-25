@@ -12,7 +12,7 @@ const MyPortal: React.FC<{
     "fixed inset-0 w-screen h-100% bg-black/75 flex items-center justify-center";
   el.addEventListener("click", (e: Event) => {
     const target = e.target as HTMLElement;
-    if (target.id === "overlay") {
+    if (target.classList.contains("overlay")) {
       onClose();
     }
     return;
@@ -27,7 +27,12 @@ const MyPortal: React.FC<{
 
   if (!isOpen) return null;
 
-  return ReactDOM.createPortal(<div>{modal}</div>, el);
+  return ReactDOM.createPortal(
+    <div className="overlay flex h-full w-full justify-center xs:items-end sm:items-center">
+      {modal}
+    </div>,
+    el,
+  );
 };
 
 export default MyPortal;

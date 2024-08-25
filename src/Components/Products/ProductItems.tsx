@@ -5,10 +5,15 @@ import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
 
 import { useProductCardContext } from "./ProductContext";
 import { useOrderContext } from "../Order/OrderContext";
+import useMediaQuery from "@/Hooks/useMediaQuery";
+import { MediaQuery } from "@/Shared/enum";
 
 export const ProductImage: React.FC = () => {
   const productCtx = useProductCardContext();
   const cartCtx = useOrderContext();
+  const isBig = useMediaQuery(MediaQuery.BIG);
+  const isSmall = useMediaQuery(MediaQuery.SMALL);
+  const isMobile = useMediaQuery(MediaQuery.MOBILE);
 
   const handleSelectStyle = cartCtx?.list?.some(
     (order) => order.name === productCtx?.name,
@@ -17,11 +22,41 @@ export const ProductImage: React.FC = () => {
     : "";
 
   return (
-    <div
-      className={`aspect-square overflow-hidden rounded-lg xs:w-56 sm:w-40 md:w-56 ${handleSelectStyle}`}
-    >
-      <img className={`h-full w-full`} src={productCtx?.image.desktop} alt="" />
-    </div>
+    <>
+      {isMobile && !isSmall && !isBig && (
+        <div
+          className={`aspect-[1/0.6] w-full overflow-hidden rounded-lg ${handleSelectStyle}`}
+        >
+          <img
+            className={`h-full w-full`}
+            src={productCtx?.image.mobile}
+            alt=""
+          />
+        </div>
+      )}
+      {isSmall && !isBig && (
+        <div
+          className={`aspect-square w-52 overflow-hidden rounded-lg ${handleSelectStyle}`}
+        >
+          <img
+            className={`h-full w-full`}
+            src={productCtx?.image.tablet}
+            alt=""
+          />
+        </div>
+      )}
+      {isBig && (
+        <div
+          className={`aspect-square w-56 overflow-hidden rounded-lg ${handleSelectStyle}`}
+        >
+          <img
+            className={`h-full w-full`}
+            src={productCtx?.image.desktop}
+            alt=""
+          />
+        </div>
+      )}
+    </>
   );
 };
 

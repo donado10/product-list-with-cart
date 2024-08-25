@@ -11,7 +11,7 @@ const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
 }) => {
   const cartCtx = useOrderContext()!;
   return (
-    <div className="xs:[25rem] flex h-fit flex-grow flex-col gap-4 rounded-md bg-white p-8 text-rose-900 sm:w-[37rem]">
+    <div className="flex h-fit flex-col gap-4 rounded-md bg-white p-8 text-rose-900 xs:w-full sm:w-[37rem]">
       <div>
         <img src={Success} alt="" />
       </div>
