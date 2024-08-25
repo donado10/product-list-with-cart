@@ -63,7 +63,9 @@ const Cart = () => {
         />
       )}
       <div>
-        <h1 className="text-2xl font-bold text-red-custom">Your Cart</h1>
+        <h1 className="font-bold text-red-custom xs:text-xl sm:text-2xl">
+          Your Cart
+        </h1>
       </div>
       <OrderList>
         {cartCtx.list!.length > 0 &&
@@ -80,11 +82,11 @@ const Cart = () => {
           })}
       </OrderList>
       <OrderTotal />
-      <div className="flex w-4/5 items-center justify-center gap-2 self-center rounded-md bg-rose-50 py-2">
+      <div className="flex w-[90%] items-center justify-center gap-2 self-center rounded-md bg-rose-50 py-2">
         <span>
           <img src={Carbon} alt="" />
         </span>
-        <span>
+        <span className="xs:text-xs sm:text-base">
           This is a <span className="font-bold">carbon-neutral</span> delivery
         </span>
       </div>

@@ -3,18 +3,30 @@ import { useOrderContext } from "./OrderContext";
 import Close from "@/assets/images/icon-remove-item.svg";
 
 const OrderName: React.FC<{ name: string }> = ({ name }) => {
-  return <h1 className="font-bold">{name}</h1>;
+  return <h1 className="font-bold xs:text-sm sm:text-base">{name}</h1>;
 };
 
 const OrderAmount: React.FC<{ amount: number }> = ({ amount }) => {
-  return <h2 className="font-bold text-red-custom">{amount}x</h2>;
+  return (
+    <h2 className="font-bold text-red-custom xs:text-xs sm:text-base">
+      {amount}x
+    </h2>
+  );
 };
 
 const OrderUnitPrice: React.FC<{ unit_price: number }> = ({ unit_price }) => {
-  return <span className="price">@ ${unit_price.toFixed(2)}</span>;
+  return (
+    <span className="price xs:text-xs sm:text-base">
+      @ ${unit_price.toFixed(2)}
+    </span>
+  );
 };
 const OrderPrice: React.FC<{ price: number }> = ({ price }) => {
-  return <span className="total font-semibold">${price.toFixed(2)}</span>;
+  return (
+    <span className="total font-semibold xs:text-xs sm:text-base">
+      ${price.toFixed(2)}
+    </span>
+  );
 };
 
 export const OrderSingle: React.FC<{
@@ -37,7 +49,7 @@ export const OrderSingle: React.FC<{
         </div>
       </div>
       <button
-        className="overflow-hidden rounded-full border-2 border-rose-400 p-1"
+        className="overflow-hidden rounded-full border-2 border-rose-400 xs:p-[2px] sm:p-1"
         onClick={() => {
           cartCtx?.deleteOrder(name);
         }}
@@ -79,7 +91,9 @@ export const OrderTotal = () => {
   return (
     <div className="flex items-center justify-between p-2">
       <span className="text-sm">Order Total</span>
-      <span className="text-2xl font-extrabold">${value?.toFixed(2)}</span>
+      <span className="font-extrabold xs:text-xl sm:text-2xl">
+        ${value?.toFixed(2)}
+      </span>
     </div>
   );
 };
