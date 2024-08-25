@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "proxy": "http://localhost:5173",
+  "proxy": "http://localhost:5173/",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,11 +11,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/node": "^22.5.0",
     "react": "^19.0.0-rc-1d989965-20240821",
     "react-dom": "^19.0.0-rc-1d989965-20240821"
   },
   "devDependencies": {
+    "@types/node": "^22.5.0",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
