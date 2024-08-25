@@ -15,6 +15,7 @@ const MyPortal: React.FC<{
     if (target.classList.contains("overlay")) {
       onClose();
     }
+
     return;
   });
 
