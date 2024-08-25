@@ -21,7 +21,7 @@ const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
           We hope you enjoy your food!
         </h2>
       </div>
-      <div className="rounded-sm bg-rose-50 p-2">
+      <div className="rounded-sm bg-rose-50">
         <OrderConfirmList>
           {cartCtx.list?.map((order, i) => (
             <OrderSingleModal
