@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 
 export interface IOrderElement {
   name: string;
@@ -10,7 +16,7 @@ export interface IOrderElement {
 
 interface IOrderContext {
   list: IOrderElement[] | null;
-  addOrder: (order: IOrderElement) => void;
+  addOrder: (cart: IOrderElement[], order: IOrderElement) => void;
   updateOrder: (updatedOrder: IOrderElement, order: string) => void;
   deleteOrder: (order: string) => void;
   resetOrder: () => void;
@@ -28,25 +34,43 @@ export const OrderContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
   const [cart, setCart] = useState<IOrderElement[] | null>([]);
 
-  const addOrder = (order: IOrderElement) => {
-    setCart([...(cart as IOrderElement[]), order]);
-  };
-  const updateOrder = (updatedOrder: IOrderElement, orderName: string) => {
-    setCart((prev) => {
-      return prev!.map((obj) =>
-        obj.name === orderName ? { ...obj, ...updatedOrder } : obj,
-      );
-    });
-  };
-  const deleteOrder = (orderName: string) => {
-    setCart((prev) => {
-      return prev!.filter((obj) => obj.name !== orderName);
-    });
-  };
+  const addOrder = useCallback(
+    (cartList: IOrderElement[], order: IOrderElement) => {
+      if (order != undefined) {
+        setCart([...(cartList as IOrderElement[]), order]);
+      }
+    },
+    [],
+  );
 
-  const resetOrder = () => {
+  const updateOrder = useCallback(
+    (updatedOrder?: IOrderElement, orderName?: string) => {
+      if (updateOrder !== undefined && orderName !== undefined) {
+        setCart((prev) => {
+          return prev!.map((obj) =>
+            obj.name === orderName ? { ...obj, ...updatedOrder } : obj,
+          );
+        });
+        return;
+      }
+      return;
+    },
+    [],
+  );
+
+  const deleteOrder = useCallback((orderName?: string) => {
+    if (orderName) {
+      setCart((prev) => {
+        return prev!.filter((obj) => obj.name !== orderName);
+      });
+      return;
+    }
+    return;
+  }, []);
+
+  const resetOrder = useCallback(() => {
     setCart([]);
-  };
+  }, []);
 
   return (
     <OrderContext.Provider

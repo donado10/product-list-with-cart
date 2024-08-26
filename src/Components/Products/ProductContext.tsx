@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { createContext } from "react";
 
-const ProductCardContext = createContext<{
+interface IProductContext {
   image: {
     desktop: string;
     mobile: string;
@@ -11,7 +11,9 @@ const ProductCardContext = createContext<{
   name: string;
   category: string;
   price: number;
-} | null>(null);
+}
+
+const ProductCardContext = createContext<IProductContext | null>(null);
 
 export const useProductCardContext = () => {
   const context = useContext(ProductCardContext);

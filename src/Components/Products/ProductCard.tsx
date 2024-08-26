@@ -7,18 +7,35 @@ import {
   ProductAddCartBtn,
   ProductEditQuantityBtn,
 } from "./ProductItems";
+import { IOrderElement } from "../Order/OrderContext";
 
 interface ProductCardProps {
   children: ReactNode;
 }
 
 interface ProductCardComponents extends React.FC<ProductCardProps> {
-  Image: React.FC;
-  Name: React.FC;
-  Category: React.FC;
-  Price: React.FC;
-  AddCartBtn: React.FC;
-  EditQuantityBtn: React.FC;
+  Image: React.FC<{
+    image: {
+      desktop: string;
+      mobile: string;
+      tablet: string;
+      thumbnail: string;
+    };
+    isSelected?: boolean;
+  }>;
+  Name: React.FC<{ name: string }>;
+  Category: React.FC<{ category: string }>;
+  Price: React.FC<{ price: number }>;
+  AddCartBtn: React.FC<{
+    order: IOrderElement;
+    onAddCart: (order?: IOrderElement) => void;
+  }>;
+  EditQuantityBtn: React.FC<{
+    productName: string;
+    order: IOrderElement;
+    onUpdateOrder: (order: IOrderElement, name: string) => any;
+    onDeleteOrder: (name: string) => any;
+  }>;
 }
 
 const ProductCard: ProductCardComponents = ({ children }: ProductCardProps) => {

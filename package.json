@@ -11,6 +11,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/lodash": "^4.17.7",
+    "@types/lodash.isequal": "^4.5.8",
     "react": "^19.0.0-rc-1d989965-20240821",
     "react-dom": "^19.0.0-rc-1d989965-20240821"
   },

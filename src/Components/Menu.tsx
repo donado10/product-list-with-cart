@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import ProductCard from "./Products/ProductCard";
 import ProductCardContext from "./Products/ProductContext";
 import { useOrderContext } from "./Order/OrderContext";
@@ -36,6 +36,7 @@ const Menu = () => {
   >([]);
 
   const cartCtx = useOrderContext()!;
+  useCallback(cartCtx?.addOrder, []);
 
   useEffect(() => {
     fetch("/data/data.json")
@@ -58,19 +59,65 @@ const Menu = () => {
                 <ProductCard key={i}>
                   <ProductCardContext.Provider value={d}>
                     <div className="relative mb-7 h-fit w-fit">
-                      <ProductCard.Image />
+                      <ProductCard.Image
+                        image={d.image}
+                        isSelected={cartCtx?.list?.some(
+                          (order) => order.name === d.name,
+                        )}
+                      />
                       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
                         {!cartCtx?.list?.find(
                           (value) => value.name === d.name,
-                        ) && <ProductCard.AddCartBtn />}
+                        ) && (
+                          <ProductCard.AddCartBtn
+                            order={{
+                              name: d.name,
+                              amount: 1,
+                              unit_price: d.price,
+                              price: d.price * 1,
+                              thumbnail: d.image.thumbnail,
+                            }}
+                            onAddCart={cartCtx?.addOrder.bind(
+                              this,
+                              cartCtx!.list!,
+                              {
+                                name: d.name,
+                                amount: 1,
+                                unit_price: d.price,
+                                price: d.price * 1,
+                                thumbnail: d.image.thumbnail,
+                              },
+                            )}
+                          />
+                        )}
                         {cartCtx?.list?.find(
                           (value) => value.name === d.name,
-                        ) && <ProductCard.EditQuantityBtn />}
+                        ) && (
+                          <ProductCard.EditQuantityBtn
+                            productName={d.name}
+                            order={
+                              cartCtx.list!.find(
+                                (order) => order.name === d.name,
+                              )!
+                            }
+                            onUpdateOrder={cartCtx.updateOrder.bind(
+                              null,
+                              cartCtx.list!.find(
+                                (order) => order.name === d.name,
+                              )!,
+                              d.name,
+                            )}
+                            onDeleteOrder={cartCtx.deleteOrder.bind(
+                              null,
+                              d.name,
+                            )}
+                          />
+                        )}
                       </div>
                     </div>
-                    <ProductCard.Name />
-                    <ProductCard.Category />
-                    <ProductCard.Price />
+                    <ProductCard.Name name={d.name} />
+                    <ProductCard.Category category={d.category} />
+                    <ProductCard.Price price={d.price} />
                   </ProductCardContext.Provider>
                 </ProductCard>
               );
