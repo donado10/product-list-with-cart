@@ -64,7 +64,8 @@ const Cart = () => {
       )}
       <div>
         <h1 className="font-bold text-red-custom xs:text-xl sm:text-2xl">
-          Your Cart
+          Your Cart{" "}
+          {cartCtx!.list!.length > 0 ? `(${cartCtx.list?.length})` : ""}
         </h1>
       </div>
       <OrderList>
