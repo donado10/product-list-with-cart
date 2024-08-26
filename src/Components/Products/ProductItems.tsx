@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddCartLogo from "@/assets/images/icon-add-to-cart.svg";
 import IncrementQuantity from "@/assets/images/icon-increment-quantity.svg";
 import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
