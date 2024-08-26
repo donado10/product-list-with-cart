@@ -77,9 +77,6 @@ export const ProductAddCartBtn: React.FC<{
   order: IOrderElement;
   onAddCart: (order?: IOrderElement) => void;
 }> = React.memo(({ order, onAddCart }) => {
-  useCallback(onAddCart, []);
-
-  console.log("rerender ProductAddCartBtn");
   return (
     <button
       onClick={() => {
