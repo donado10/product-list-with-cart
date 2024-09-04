@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import AddCartLogo from "@/assets/images/icon-add-to-cart.svg";
 import IncrementQuantity from "@/assets/images/icon-increment-quantity.svg";
 import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
@@ -6,6 +6,7 @@ import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
 import { IOrderElement } from "../Order/OrderContext";
 import useMediaQuery from "@/Hooks/useMediaQuery";
 import { MediaQuery } from "@/Shared/enum";
+import { useProductCardContext } from "./ProductContext";
 
 export const ProductImage: React.FC<{
   image: {
@@ -75,12 +76,17 @@ export const ProductPrice: React.FC<{ price: number }> = React.memo(
 
 export const ProductAddCartBtn: React.FC<{
   order: IOrderElement;
-  onAddCart: (order?: IOrderElement) => void;
-}> = React.memo(({ order, onAddCart }) => {
+}> = React.memo(({ order }) => {
+  const productCtx = useProductCardContext();
+  const { addToCart } = { ...productCtx! };
+
+  useCallback(addToCart, []);
+  console.log("ProductAddCartBtn");
+
   return (
     <button
       onClick={() => {
-        onAddCart(order);
+        addToCart(order);
       }}
       className="flex w-40 items-center justify-center gap-4 rounded-l-3xl rounded-r-3xl border-[1px] border-rose-400 bg-white py-2"
     >

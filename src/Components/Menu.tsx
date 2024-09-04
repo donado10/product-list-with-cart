@@ -1,7 +1,11 @@
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import ProductCard from "./Products/ProductCard";
-import ProductCardContext from "./Products/ProductContext";
+import ProductCardContext, {
+  ProductCardProvider,
+} from "./Products/ProductContext";
 import { useOrderContext } from "./Order/OrderContext";
+
+import { IProductData } from "./Products/ProductContext";
 
 interface ProductListProps {
   children: ReactNode;
@@ -20,20 +24,7 @@ const ProductList = ({ children }: ProductListProps) => {
 };
 
 const Menu = () => {
-  const [data, setData] = useState<
-    | {
-        image: {
-          desktop: string;
-          mobile: string;
-          tablet: string;
-          thumbnail: string;
-        };
-        name: string;
-        category: string;
-        price: number;
-      }[]
-    | []
-  >([]);
+  const [data, setData] = useState<IProductData[] | []>([]);
 
   const cartCtx = useOrderContext()!;
   useCallback(cartCtx?.addOrder, []);
@@ -57,7 +48,7 @@ const Menu = () => {
             {data?.map((d, i) => {
               return (
                 <ProductCard key={i}>
-                  <ProductCardContext.Provider value={d}>
+                  <ProductCardProvider product={d}>
                     <div className="relative mb-7 h-fit w-fit">
                       <ProductCard.Image
                         image={d.image}
@@ -77,17 +68,6 @@ const Menu = () => {
                               price: d.price * 1,
                               thumbnail: d.image.thumbnail,
                             }}
-                            onAddCart={cartCtx?.addOrder.bind(
-                              this,
-                              cartCtx!.list!,
-                              {
-                                name: d.name,
-                                amount: 1,
-                                unit_price: d.price,
-                                price: d.price * 1,
-                                thumbnail: d.image.thumbnail,
-                              },
-                            )}
                           />
                         )}
                         {cartCtx?.list?.find(
@@ -118,7 +98,7 @@ const Menu = () => {
                     <ProductCard.Name name={d.name} />
                     <ProductCard.Category category={d.category} />
                     <ProductCard.Price price={d.price} />
-                  </ProductCardContext.Provider>
+                  </ProductCardProvider>
                 </ProductCard>
               );
             })}

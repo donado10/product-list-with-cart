@@ -28,7 +28,6 @@ interface ProductCardComponents extends React.FC<ProductCardProps> {
   Price: React.FC<{ price: number }>;
   AddCartBtn: React.FC<{
     order: IOrderElement;
-    onAddCart: (order?: IOrderElement) => void;
   }>;
   EditQuantityBtn: React.FC<{
     productName: string;
