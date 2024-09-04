@@ -1,12 +1,19 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import AddCartLogo from "@/assets/images/icon-add-to-cart.svg";
 import IncrementQuantity from "@/assets/images/icon-increment-quantity.svg";
 import DecrementQuantity from "@/assets/images/icon-decrement-quantity.svg";
 
-import { IOrderElement } from "../Order/OrderContext";
 import useMediaQuery from "@/Hooks/useMediaQuery";
 import { MediaQuery } from "@/Shared/enum";
-import { useProductCardContext } from "./ProductContext";
+import { useDispatch } from "react-redux";
+import {
+  addOrder,
+  deleteOrder,
+  IOrderElement,
+  updateOrder,
+} from "@/Store/features/cart";
+
+import { isEqual } from "lodash";
 
 export const ProductImage: React.FC<{
   image: {
@@ -77,16 +84,14 @@ export const ProductPrice: React.FC<{ price: number }> = React.memo(
 export const ProductAddCartBtn: React.FC<{
   order: IOrderElement;
 }> = React.memo(({ order }) => {
-  const productCtx = useProductCardContext();
-  const { addToCart } = { ...productCtx! };
+  const dispatch = useDispatch();
 
-  useCallback(addToCart, []);
   console.log("ProductAddCartBtn");
 
   return (
     <button
       onClick={() => {
-        addToCart(order);
+        dispatch(addOrder(order));
       }}
       className="flex w-40 items-center justify-center gap-4 rounded-l-3xl rounded-r-3xl border-[1px] border-rose-400 bg-white py-2"
     >
@@ -101,20 +106,25 @@ export const ProductAddCartBtn: React.FC<{
 export const ProductEditQuantityBtn: React.FC<{
   productName: string;
   order: IOrderElement;
-  onUpdateOrder: (order: IOrderElement, name: string) => void;
-  onDeleteOrder: (name: string) => void;
-}> = React.memo(({ productName, order, onDeleteOrder, onUpdateOrder }) => {
+}> = React.memo(({ productName, order }) => {
   const [value, setValue] = useState<number>(1);
+
+  console.log("ProductAddCartBtn");
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (value <= 0) {
-      onDeleteOrder(productName);
+      dispatch(deleteOrder({ orderName: productName }));
     }
 
-    order!.amount = value;
-    order!.price = value * order!.unit_price;
+    const newOrder = { ...order };
 
-    onUpdateOrder(order!, productName);
+    newOrder!.amount = value;
+    newOrder!.price = value * newOrder!.unit_price;
+
+    dispatch(updateOrder({ orderToUpdate: newOrder, orderName: productName }));
+
     return;
   }, [value]);
 

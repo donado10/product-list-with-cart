@@ -1,15 +1,18 @@
 import Carbon from "@/assets/images/icon-carbon-neutral.svg";
-import { useOrderContext } from "./Order/OrderContext";
 import { OrderList, OrderSingle, OrderTotal } from "./Order/OrderItems";
 import { useState } from "react";
 import MyPortal from "./Overlay";
 import { OrderConfirmList, OrderSingleModal } from "./Order/OrderItems";
 import Success from "@/assets/images/icon-order-confirmed.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { IRootState } from "@/Store/store";
+import { resetOrder } from "@/Store/features/cart";
 
 const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
   onNewOrder,
 }) => {
-  const cartCtx = useOrderContext()!;
+  const cartList = useSelector((state: IRootState) => state.cart);
+  const dispatch = useDispatch();
   return (
     <div className="flex h-fit flex-col gap-4 rounded-md bg-white p-8 text-rose-900 xs:w-full sm:w-[37rem]">
       <div>
@@ -23,7 +26,7 @@ const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
       </div>
       <div className="rounded-sm bg-rose-50">
         <OrderConfirmList>
-          {cartCtx.list?.map((order, i) => (
+          {cartList.list?.map((order, i) => (
             <OrderSingleModal
               key={i}
               name={order.name}
@@ -39,7 +42,7 @@ const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
       <button
         onClick={() => {
           console.log("hey");
-          cartCtx.resetOrder();
+          dispatch(resetOrder());
           onNewOrder(false);
         }}
         className="flex w-4/5 items-center justify-center self-center rounded-md rounded-l-3xl rounded-r-3xl bg-red-custom py-2 font-semibold text-white"
@@ -52,7 +55,8 @@ const CartConfirmModal: React.FC<{ onNewOrder: React.Dispatch<any> }> = ({
 
 const Cart = () => {
   const [enableModal, setEnableModal] = useState<boolean>(false);
-  const cartCtx = useOrderContext()!;
+  const cartList = useSelector((state: IRootState) => state.cart);
+
   return (
     <div className="flex h-fit flex-grow flex-col gap-4 rounded-md bg-white p-4 text-rose-900">
       {enableModal && (
@@ -65,12 +69,12 @@ const Cart = () => {
       <div>
         <h1 className="font-bold text-red-custom xs:text-xl sm:text-2xl">
           Your Cart{" "}
-          {cartCtx!.list!.length > 0 ? `(${cartCtx.list?.length})` : ""}
+          {cartList.list.length > 0 ? `(${cartList.list.length})` : ""}
         </h1>
       </div>
       <OrderList>
-        {cartCtx.list!.length > 0 &&
-          cartCtx.list?.map((order, i) => {
+        {cartList.list.length > 0 &&
+          cartList.list?.map((order, i) => {
             return (
               <OrderSingle
                 key={i}
@@ -93,7 +97,7 @@ const Cart = () => {
       </div>
       <button
         onClick={() => {
-          if (cartCtx.list!.length > 0) {
+          if (cartList.list!.length > 0) {
             setEnableModal(true);
           }
         }}

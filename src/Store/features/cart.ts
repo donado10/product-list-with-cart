@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { createSelector, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction } from "@reduxjs/toolkit";
 
 export interface IOrderElement {
   name: string;
@@ -14,10 +14,10 @@ export interface CartState {
 }
 
 const initialState: CartState = {
-  list: [],
+  list: [] as IOrderElement[],
 };
 
-export const cartSlice = createSlice({
+const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
@@ -34,9 +34,11 @@ export const cartSlice = createSlice({
       const orderName = action.payload.orderName;
       const order = action.payload.orderToUpdate;
       if (order !== undefined && orderName !== undefined) {
-        state.list.map((obj) => {
-          obj.name === orderName ? { ...obj, ...order } : obj;
-        });
+        state.list = [
+          ...state.list.map((obj) => {
+            return obj.name === orderName ? { ...order } : obj;
+          }),
+        ];
       }
       return;
     },
@@ -52,3 +54,8 @@ export const cartSlice = createSlice({
     },
   },
 });
+
+export default cartSlice;
+
+export const { addOrder, deleteOrder, resetOrder, updateOrder } =
+  cartSlice.actions;

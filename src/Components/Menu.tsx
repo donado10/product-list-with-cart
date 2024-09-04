@@ -1,11 +1,10 @@
-import React, { ReactNode, useCallback, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import ProductCard from "./Products/ProductCard";
-import ProductCardContext, {
-  ProductCardProvider,
-} from "./Products/ProductContext";
-import { useOrderContext } from "./Order/OrderContext";
+import ProductCardContext from "./Products/ProductContext";
 
 import { IProductData } from "./Products/ProductContext";
+import { useSelector } from "react-redux";
+import { IRootState } from "@/Store/store";
 
 interface ProductListProps {
   children: ReactNode;
@@ -26,8 +25,7 @@ const ProductList = ({ children }: ProductListProps) => {
 const Menu = () => {
   const [data, setData] = useState<IProductData[] | []>([]);
 
-  const cartCtx = useOrderContext()!;
-  useCallback(cartCtx?.addOrder, []);
+  const cartList = useSelector((state: IRootState) => state.cart);
 
   useEffect(() => {
     fetch("/data/data.json")
@@ -48,16 +46,16 @@ const Menu = () => {
             {data?.map((d, i) => {
               return (
                 <ProductCard key={i}>
-                  <ProductCardProvider product={d}>
+                  <ProductCardContext.Provider value={d}>
                     <div className="relative mb-7 h-fit w-fit">
                       <ProductCard.Image
                         image={d.image}
-                        isSelected={cartCtx?.list?.some(
+                        isSelected={cartList.list?.some(
                           (order) => order.name === d.name,
                         )}
                       />
                       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2">
-                        {!cartCtx?.list?.find(
+                        {!cartList.list?.find(
                           (value) => value.name === d.name,
                         ) && (
                           <ProductCard.AddCartBtn
@@ -70,27 +68,16 @@ const Menu = () => {
                             }}
                           />
                         )}
-                        {cartCtx?.list?.find(
+                        {cartList.list?.find(
                           (value) => value.name === d.name,
                         ) && (
                           <ProductCard.EditQuantityBtn
                             productName={d.name}
                             order={
-                              cartCtx.list!.find(
+                              cartList.list!.find(
                                 (order) => order.name === d.name,
                               )!
                             }
-                            onUpdateOrder={cartCtx.updateOrder.bind(
-                              null,
-                              cartCtx.list!.find(
-                                (order) => order.name === d.name,
-                              )!,
-                              d.name,
-                            )}
-                            onDeleteOrder={cartCtx.deleteOrder.bind(
-                              null,
-                              d.name,
-                            )}
                           />
                         )}
                       </div>
@@ -98,7 +85,7 @@ const Menu = () => {
                     <ProductCard.Name name={d.name} />
                     <ProductCard.Category category={d.category} />
                     <ProductCard.Price price={d.price} />
-                  </ProductCardProvider>
+                  </ProductCardContext.Provider>
                 </ProductCard>
               );
             })}

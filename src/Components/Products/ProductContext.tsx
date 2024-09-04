@@ -1,6 +1,5 @@
 import { ReactNode, useCallback, useContext, useState } from "react";
 import { createContext } from "react";
-import { IOrderElement, useOrderContext } from "../Order/OrderContext";
 import React from "react";
 
 export interface IProductData {
@@ -15,7 +14,7 @@ export interface IProductData {
   price: number;
 }
 
-interface IProduct {
+interface IProductContext {
   image: {
     desktop: string;
     mobile: string;
@@ -27,34 +26,11 @@ interface IProduct {
   price: number;
 }
 
-interface IProductContext {
-  product: IProduct;
-  addToCart: (order: IOrderElement) => void;
-}
-
 const ProductCardContext = createContext<IProductContext | null>(null);
 
 export const useProductCardContext = () => {
   const context = useContext(ProductCardContext);
   return context;
 };
-
-export const ProductCardProvider: React.FC<{
-  children: ReactNode;
-  product: IProductData;
-}> = React.memo(({ children, product }) => {
-  const [productDetail, setProductDetail] = useState<IProduct>(product);
-  const orderCtx = useOrderContext();
-  const { list, addOrder } = { ...orderCtx! };
-
-  const addToCart = useCallback((order: IOrderElement) => {
-    addOrder(list!, order);
-  }, []);
-  return (
-    <ProductCardContext.Provider value={{ product: productDetail, addToCart }}>
-      {children}
-    </ProductCardContext.Provider>
-  );
-});
 
 export default ProductCardContext;

@@ -1,7 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 
-import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import cartSlice from "./features/cart";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    cart: cartSlice.reducer,
+  },
 });
+export type IRootState = ReturnType<typeof store.getState>;
